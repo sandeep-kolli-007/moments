@@ -1,9 +1,10 @@
 // src/components/Counter.js
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect,useSelector } from 'react-redux';
 
 function Counter(props) {
+ 
   return (
     <div>
       <p>Count: {props.count}</p>
@@ -26,4 +27,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+export default Counter;

@@ -14,8 +14,7 @@ import {
 } from '@ionic/react';
 import React from 'react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
- 
+import { useSelector } from 'react-redux';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -37,15 +36,34 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import UsersList from './components/usersList/UsersList';
 import PhoneAuth from './components/phone/PhoneAuth';
+import Counter from './components/Counter';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-   <IonApp>
-  <PhoneAuth/>
- </IonApp>
-);
+const App: React.FC = () => 
+  {
+  return <IonApp>
+    <PhoneAuth />
+    {/* <Counter/> */}
+   
+  </IonApp>;
+  }
+ 
 
+
+function mapStateToProps(state:any) {
+  return {
+    count: state.counter.count
+  };
+}
+
+function mapDispatchToProps(dispatch:any) {
+  return {
+    increment: () => dispatch({ type: 'INCREMENT' }),
+    decrement: () => dispatch({ type: 'DECREMENT' })
+  };
+}
 export default App;
 
 
+ 

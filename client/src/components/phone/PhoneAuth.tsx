@@ -26,7 +26,7 @@ const PhoneAuth = () => {
       signInSuccessWithAuthResult: function(authResult:any, redirectUrl:any) {
         // Handle the successful sign-in
         // You can access the user's phone number in the authResult object
-       setPhoneNumber(authResult.user.phoneNumber);
+       setPhoneNumber(authResult?.user?.phoneNumber);
         console.log(authResult)
         console.log(redirectUrl)
         // Redirect to the signed-in page
@@ -42,6 +42,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // No user is signed in.
   }
 });
+console.log(phoneNumber)
   return (
     <div>
       {!phoneNumber && false ? 
