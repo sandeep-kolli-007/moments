@@ -34,8 +34,8 @@ root.render(
   <Provider store={store}>
      <PersistGate  loading={null} persistor={persistor}>
 
-    {/* <App /> */}
-    <Counter/>
+    <App/>
+   
      </PersistGate>
   </Provider>
  

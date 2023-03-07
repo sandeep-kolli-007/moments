@@ -7,7 +7,8 @@ import { Button, Col, Row } from "react-bootstrap";
 //styles
 import './usersList.scss'
 function UsersList() {
-  const socket = io('http://localhost:3001');
+  const socket = io('https://moments-node.onrender.com');
+  // const socket = io('wss://moments-node.web.app:3001');
   const [present] = useIonToast();
   const { Contacts } = Plugins;
   const [messages, setMessages] = useState<any>([]);
@@ -70,7 +71,6 @@ function UsersList() {
       </div>
       </div>  
       ))} 
-      
       <Row className='mx-0'>
       <Col>
       <IonInput className='form-control  w-100' type="text" value={input} onIonChange={handleInput} placeholder="Enter your message" ></IonInput></Col>
