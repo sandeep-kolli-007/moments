@@ -1,16 +1,18 @@
 import { IonButton, IonInput, useIonToast } from "@ionic/react";
 import { io } from "socket.io-client";
 import { Plugins } from '@capacitor/core';
+
 import React from 'react';
 import { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 //styles
 import './usersList.scss'
 import { Contacts, Contact, ContactField, ContactName,ContactFindOptions } from '@ionic-native/contacts';
-import { response } from "express";
 import { any } from "prop-types";
+// import { Contacts } from '@capacitor-community/contacts';
 
 function UsersList({phoneNumber}:any) {
+    let navigator: Navigator & { contacts: any };
   const socket = io('https://moments-node.onrender.com');
   const [present] = useIonToast();
   const [contacts, setContacts] = useState([]);
@@ -19,26 +21,29 @@ function UsersList({phoneNumber}:any) {
   const [sender, setSender] = useState('');
   const [id, setId] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const { Permissions } = Plugins;
  
-  const contact = new Contacts();
-  useEffect(() => {
-    const fetchContacts = async () => {
-        try {
-     
-          contact.find(["*"]).then((response:any)=>{
-             setContacts(response.map((c:any)=>({"contact":c.displayName,"phoneNumbers":c.phoneNumbers.map((pn:any)=>(pn.value))}))
-            )
-          })
-       
-            // const result = await Contacts.find(['displayName', 'phoneNumbers', 'emails']);
-            // setContacts(result);
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
-    fetchContacts();
-  }, []);
+  // const contact = new Contacts();
+  // useEffect(() => {
+  //   const fetchContacts = async () => {
+  //       try {
+     
+  //         contact.find(["*"]).then((response:any)=>{
+  //           debugger
+  //            setContacts(response.map((c:any)=>({"contact":c.displayName,"phoneNumbers":c.phoneNumbers.map((pn:any)=>(pn.value))}))
+  //           )
+  //         })
+       
+  //           // const result = await Contacts.find(['displayName', 'phoneNumbers', 'emails']);
+  //           // setContacts(result);
+  //       } catch (error) {
+  //           console.error(error);
+  //       }
+  //   };
+
+  //   fetchContacts();
+  // }, []);
  
 
   useEffect(() => {
@@ -77,6 +82,10 @@ function UsersList({phoneNumber}:any) {
       position: position
     });
   };
+
+
+ 
+
   return (
     <Row className='app'>
       {phoneNumber}

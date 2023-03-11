@@ -13,7 +13,6 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import React from 'react';
-import { IonReactRouter } from '@ionic/react-router';
 import { useSelector } from 'react-redux';
 
 /* Core CSS required for Ionic components to work properly */
@@ -42,12 +41,13 @@ setupIonicReact();
 
 const App: React.FC = () => 
   {
-  return <IonApp> <IonContent>
+  return (
+  <IonApp>
+     <IonContent>
     <PhoneAuth />
     </IonContent>
-   
-   
-  </IonApp>;
+  </IonApp>
+  );
   }
  
 export default App;

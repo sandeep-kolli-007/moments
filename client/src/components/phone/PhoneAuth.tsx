@@ -45,7 +45,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
   return (
     <div>
-      {!phoneNumber  ? 
+      {!phoneNumber && false ? 
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
         :
         <UsersList phoneNumber={phoneNumber}/>
