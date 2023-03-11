@@ -42,13 +42,13 @@ firebase.auth().onAuthStateChanged(function(user) {
     // No user is signed in.
   }
 });
-console.log(phoneNumber)
+
   return (
     <div>
-      {!phoneNumber && false ? 
+      {!phoneNumber  ? 
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
         :
-        <UsersList/>
+        <UsersList phoneNumber={phoneNumber}/>
       }
     </div>
   );

@@ -7,22 +7,29 @@ import { Button, Col, Row } from "react-bootstrap";
 //styles
 import './usersList.scss'
 import { Contacts, Contact, ContactField, ContactName,ContactFindOptions } from '@ionic-native/contacts';
+import { response } from "express";
+import { any } from "prop-types";
 
 function UsersList({phoneNumber}:any) {
-  const socket = io('http://localhost:3001');
+  const socket = io('https://moments-node.onrender.com');
   const [present] = useIonToast();
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState([]);
   const [messages, setMessages] = useState<any>([]);
   const [input, setInput] = useState('');
   const [sender, setSender] = useState('');
   const [id, setId] = useState('');
   const [showToast, setShowToast] = useState(false);
-
+ 
+  const contact = new Contacts();
   useEffect(() => {
     const fetchContacts = async () => {
         try {
-          console.log(ContactName);
-          
+     
+          contact.find(["*"]).then((response:any)=>{
+             setContacts(response.map((c:any)=>({"contact":c.displayName,"phoneNumbers":c.phoneNumbers.map((pn:any)=>(pn.value))}))
+            )
+          })
+       
             // const result = await Contacts.find(['displayName', 'phoneNumbers', 'emails']);
             // setContacts(result);
         } catch (error) {
@@ -31,11 +38,13 @@ function UsersList({phoneNumber}:any) {
     };
 
     fetchContacts();
-}, []);
+  }, []);
+ 
 
   useEffect(() => {
     socket.on('chat message', (msg:any) => {
       setMessages([...messages, msg]);
+      console.log("j")
     });
   }, [messages]);
   
@@ -70,6 +79,8 @@ function UsersList({phoneNumber}:any) {
   };
   return (
     <Row className='app'>
+      {phoneNumber}
+     { contacts.length>0 && JSON.stringify(contacts.map((m:any)=>(m.phoneNumbers)))}
     <div style={{height:"100vh"}}>
     <div style={{position: "fixed",width:"100%",
     bottom: "16px"}}>
@@ -88,6 +99,7 @@ function UsersList({phoneNumber}:any) {
       </Row>
       </div>
       </div>
+     
       </Row>
       );
     }

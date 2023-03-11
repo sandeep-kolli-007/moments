@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import {  Route } from 'react-router-dom';
 import {
   IonApp,
   IonButton,
@@ -42,27 +42,14 @@ setupIonicReact();
 
 const App: React.FC = () => 
   {
-  return <IonApp>
+  return <IonApp> <IonContent>
     <PhoneAuth />
-    {/* <Counter/> */}
+    </IonContent>
+   
    
   </IonApp>;
   }
  
-
-
-function mapStateToProps(state:any) {
-  return {
-    count: state.counter.count
-  };
-}
-
-function mapDispatchToProps(dispatch:any) {
-  return {
-    increment: () => dispatch({ type: 'INCREMENT' }),
-    decrement: () => dispatch({ type: 'DECREMENT' })
-  };
-}
 export default App;
 
 
