@@ -7,22 +7,41 @@ import { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 //styles
 import './usersList.scss'
-import { Contacts, Contact, ContactField, ContactName,ContactFindOptions } from '@ionic-native/contacts';
+// import { Contacts, Contact, ContactField, ContactName,ContactFindOptions } from '@ionic-native/contacts';
 import { any } from "prop-types";
+import { Contacts } from '@capacitor-community/contacts';
+import { log } from "console";
 // import { Contacts } from '@capacitor-community/contacts';
-
 function UsersList({phoneNumber}:any) {
     let navigator: Navigator & { contacts: any };
   const socket = io('https://moments-node.onrender.com');
   const [present] = useIonToast();
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState<Array<any>>([]);
   const [messages, setMessages] = useState<any>([]);
   const [input, setInput] = useState('');
   const [sender, setSender] = useState('');
   const [id, setId] = useState('');
   const [showToast, setShowToast] = useState(false);
   const { Permissions } = Plugins;
- 
+  const [cameraPermission, setCameraPermission] = useState(false);
+  const [contactsPermission, setContactsPermission] = useState(false);
+
+const { Camera, Contacts } = Plugins;
+
+const retrieveListOfContacts = async () => {
+  const projection = {
+    // Specify which fields should be retrieved.
+    name: true,
+    phones: true
+  };
+
+  const result = await Contacts.getContacts({
+    projection,
+  });
+  if(result?.contacts?.length>0){
+ setContacts(result.contacts.map((c:any)=>({"name":c?.name?.display,"phoneNumber": c.phones ? c?.phones.map((ph:any)=>ph?.number) :[]})));
+  }
+};
 
   // const contact = new Contacts();
   // useEffect(() => {
@@ -83,13 +102,32 @@ function UsersList({phoneNumber}:any) {
     });
   };
 
+  useEffect(() => {
+
+    // const checkCameraPermission = async () => {
+    //   const { Camera } = Plugins;
+    //   const permission = await Camera.checkPermissions();
+    //   setCameraPermission(permission.camera === 'granted');
+    // };
+    
+    // const checkContactsPermission = async () => {
+    //   const { Contacts } = Plugins;
+    //   const permission = await Contacts.getPermissions();
+    //   setContactsPermission(permission.contacts === 'granted');
+    // };
+  
+    // checkCameraPermission();
+    // checkContactsPermission();
+    retrieveListOfContacts();
+  }, []);
+  
 
  
 
   return (
     <Row className='app'>
       {phoneNumber}
-     { contacts.length>0 && JSON.stringify(contacts.map((m:any)=>(m.phoneNumbers)))}
+     { contacts.length>0 && JSON.stringify(contacts)}
     <div style={{height:"100vh"}}>
     <div style={{position: "fixed",width:"100%",
     bottom: "16px"}}>

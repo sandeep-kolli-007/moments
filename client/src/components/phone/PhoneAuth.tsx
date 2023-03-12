@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'firebase/compat/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import StyledFirebaseAuth from '../stylesfirebaseauth';
 import firebase from 'firebase/compat/app';
 import { PhoneAuthProvider } from '@firebase/auth';
 import firebaseui from 'firebaseui';
