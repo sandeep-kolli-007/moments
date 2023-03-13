@@ -9,7 +9,7 @@ import UsersList from '../usersList/UsersList';
 import IndividualChat from '../individualChat/individualChat';
   import { IonApp } from '@ionic/react';
   import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect ,useParams} from 'react-router-dom';
 
 // import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -17,6 +17,7 @@ import { IonReactRouter } from '@ionic/react-router';
 // import { Route } from 'react-router';
 
 import { playCircle, radio, library, search } from 'ionicons/icons';
+import ContactsList from '../contactsList/contactsList';
 const PhoneAuth = () => {
  
 
@@ -64,28 +65,30 @@ firebase.auth().onAuthStateChanged(function(user) {
 <IonReactRouter> 
 <IonTabs>
   <IonRouterOutlet>
-    {/* <Redirect exact path="/" to="/home" /> */}
+    <Redirect exact path="/" to="/chats" /> 
     {/*
     Use the render method to reduce the number of renders your component will have due to a route change.
 
     Use the component prop when your component depends on the RouterComponentProps passed in automatically.
   */}
-    <Route path="/home" render={() => <UsersList />} exact={true} />
+    <Route path="/chats" render={() => <UsersList />} exact={true} />
+    <Route path="/contacts" render={() => <ContactsList />} exact={true} />
+    <Route path="/individual/:number" render={() => <IndividualChat />} exact={true} />
 
   </IonRouterOutlet>
 
   <IonTabBar slot="bottom">
-    <IonTabButton tab="home" href="/home">
+    <IonTabButton tab="home" href="/contacts">
       <IonIcon icon={playCircle} />
-      <IonLabel>Listen now</IonLabel>
+      <IonLabel>Contacts</IonLabel>
     </IonTabButton>
 
-    <IonTabButton tab="radio" href="/radio">
+    <IonTabButton tab="radio" href="/chats">
       <IonIcon icon={radio} />
-      <IonLabel>Radio</IonLabel>
+      <IonLabel>Chats</IonLabel>
     </IonTabButton>
-
-    <IonTabButton tab="library" href="/library">
+ 
+    {/* <IonTabButton tab="library" href="/library">
       <IonIcon icon={library} />
       <IonLabel>Library</IonLabel>
     </IonTabButton>
@@ -93,7 +96,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     <IonTabButton tab="search" href="/search">
       <IonIcon icon={search} />
       <IonLabel>Search</IonLabel>
-    </IonTabButton>
+    </IonTabButton> */}
   </IonTabBar>
 </IonTabs>
 </IonReactRouter>

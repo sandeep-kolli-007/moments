@@ -1,4 +1,4 @@
-import { IonButton, IonInput, useIonToast } from "@ionic/react";
+import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonItem, IonRow, IonTextarea, IonTitle, IonToolbar, useIonToast } from "@ionic/react";
 import { io } from "socket.io-client";
 import { Plugins } from '@capacitor/core';
 
@@ -15,6 +15,8 @@ import { log } from "console";
 import { db } from '../../index';
 
 import { updateDoc, serverTimestamp } from "firebase/firestore";
+import {  useParams} from 'react-router-dom';
+import Header from "../header/header";
 
 function IndividualChat({phoneNumber}:any) {
     let navigator: Navigator & { contacts: any };
@@ -30,6 +32,8 @@ function IndividualChat({phoneNumber}:any) {
   const [cameraPermission, setCameraPermission] = useState(false);
   const [contactsPermission, setContactsPermission] = useState(false);
 const { Camera, Contacts } = Plugins;
+const {number}:any= useParams();
+
 // Example: Get all documents in a collection
 const usersData = [
   { name: "John", age: 25 ,serverTimestamp:serverTimestamp()},
@@ -142,30 +146,32 @@ const retrieveListOfContacts = async () => {
 
  
 
-  return (
-    <Row className='app'>
-      {phoneNumber}
-     { contacts.length>0 && JSON.stringify(contacts)}
-    <div style={{height:"100vh"}}>
-    <div style={{position: "fixed",width:"100%",
-    bottom: "16px"}}>
-    {messages.map((msg:any, i:number) => (
-      <div key={i} className={`chat-bubble-block row  m-0 px-3 ${msg.id === id ?'justify-content-end':"justify-content-start"}`}>
-      <div className='chat-bubble col-6'>
-      <p className='m-0 p-2 text-white' key={i}>{msg.id === id ?"you": "stranger"}: {msg.message}</p>
-      </div>
-      </div>  
-      ))} 
+  return (<IonContent>
+   <Header title={number}/>
+   <IonGrid >
+   <IonRow className='app '>
+      
+      {/* { contacts.length>0 && JSON.stringify(contacts)} */}
+     <IonCol  size="12" style={{minHeight:"calc(100vh - 170px)",maxHeight:"calc(100vh - 170px)"}}>
+     {messages.map((msg:any, i:number) => (
+       <div key={i} className={`chat-bubble-block row  m-0 px-3 ${msg.id === id ?'justify-content-end':"justify-content-start"}`}>
+       <div className='chat-bubble col-6'>
+       <p className='m-0 p-2 text-white' key={i}>{msg.id === id ?"you": "stranger"}: {msg.message}</p>
+       </div>
+       </div>  
+       ))} 
+       </IonCol>
+       <IonItem  color="none" lines="none" class="w-100 ion-align-items-center">
+        <IonInput className='form-control w-100'    value={input} onIonChange={handleInput} placeholder="Enter your message"></IonInput>
+        <IonButton  size="default"   slot="end"  onClick={(e)=>{handleSubmit(e)}}>Send</IonButton>
+      </IonItem>
+       
+     </IonRow> 
+   </IonGrid>
+    
+    
+  </IonContent>
    
-      <Row className='mx-0'>
-      <Col>
-      <IonInput className='form-control  w-100' type="text" value={input} onIonChange={handleInput} placeholder="Enter your message" ></IonInput></Col>
-      <IonButton  className="w-auto h-auto" size="default" onClick={(e)=>{handleSubmit(e)}}>Send</IonButton>
-      </Row>
-      </div>
-      </div>
-     
-      </Row>
       );
     }
     
