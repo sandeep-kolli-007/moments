@@ -42,11 +42,7 @@ setupIonicReact();
 const App: React.FC = () => 
   {
   return (
-  <IonApp>
-     <IonContent>
     <PhoneAuth />
-    </IonContent>
-  </IonApp>
   );
   }
  

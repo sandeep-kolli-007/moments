@@ -13,6 +13,9 @@ import { Provider } from 'react-redux';
 import {store,persistor} from './store';
 import Counter from './components/Counter';
 import { PersistGate } from 'redux-persist/integration/react';
+ 
+import "firebase/compat/firestore";
+
 const container = document.getElementById('root');
 const root = createRoot(container!);
 const firebaseConfig = {
@@ -26,8 +29,8 @@ const firebaseConfig = {
   measurementId: "G-TBWBXHT5HJ"
 };
  export const app = firebase.initializeApp(firebaseConfig);
+ export const db = firebase.firestore(app);
  const analytics = getAnalytics(app);
- 
 root.render(
   
 

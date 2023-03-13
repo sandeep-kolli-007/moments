@@ -1,154 +1,96 @@
-import { IonButton, IonInput, useIonToast } from "@ionic/react";
-import { io } from "socket.io-client";
-import { Plugins } from '@capacitor/core';
+import {
+  IonApp,
+  IonAvatar,
+  IonBadge,
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonProgressBar,
+  IonRefresher,
+  IonRefresherContent,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  RefresherEventDetail,
+  useIonToast,
+} from '@ionic/react'
+import { io } from 'socket.io-client'
+import { Plugins } from '@capacitor/core'
 
-import React from 'react';
-import { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
-//styles
-import './usersList.scss'
-// import { Contacts, Contact, ContactField, ContactName,ContactFindOptions } from '@ionic-native/contacts';
-import { any } from "prop-types";
-import { Contacts } from '@capacitor-community/contacts';
-import { log } from "console";
-// import { Contacts } from '@capacitor-community/contacts';
-function UsersList({phoneNumber}:any) {
-    let navigator: Navigator & { contacts: any };
-  const socket = io('https://moments-node.onrender.com');
-  const [present] = useIonToast();
-  const [contacts, setContacts] = useState<Array<any>>([]);
-  const [messages, setMessages] = useState<any>([]);
-  const [input, setInput] = useState('');
-  const [sender, setSender] = useState('');
-  const [id, setId] = useState('');
-  const [showToast, setShowToast] = useState(false);
-  const { Permissions } = Plugins;
-  const [cameraPermission, setCameraPermission] = useState(false);
-  const [contactsPermission, setContactsPermission] = useState(false);
+import React from 'react'
+import { useEffect, useState } from 'react'
 
-const { Camera, Contacts } = Plugins;
+function UsersList({ phoneNumber }: any) {
+  const [items, setItems] = useState<string[]>([])
 
-const retrieveListOfContacts = async () => {
-  const projection = {
-    // Specify which fields should be retrieved.
-    name: true,
-    phones: true
-  };
-
-  const result = await Contacts.getContacts({
-    projection,
-  });
-  if(result?.contacts?.length>0){
- setContacts(result.contacts.map((c:any)=>({"name":c?.name?.display,"phoneNumber": c.phones ? c?.phones.map((ph:any)=>ph?.number) :[]})));
-  }
-};
-
-  // const contact = new Contacts();
-  // useEffect(() => {
-  //   const fetchContacts = async () => {
-  //       try {
-     
-  //         contact.find(["*"]).then((response:any)=>{
-  //           debugger
-  //            setContacts(response.map((c:any)=>({"contact":c.displayName,"phoneNumbers":c.phoneNumbers.map((pn:any)=>(pn.value))}))
-  //           )
-  //         })
-       
-  //           // const result = await Contacts.find(['displayName', 'phoneNumbers', 'emails']);
-  //           // setContacts(result);
-  //       } catch (error) {
-  //           console.error(error);
-  //       }
-  //   };
-
-  //   fetchContacts();
-  // }, []);
- 
-
-  useEffect(() => {
-    socket.on('chat message', (msg:any) => {
-      setMessages([...messages, msg]);
-      console.log("j")
-    });
-  }, [messages]);
-  
-  useEffect(()=>{
-    socket.on("connect", () => {
-      console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-      setId(socket.id)
-    });
-  },[])
-  
-  const handleInput = (e:any) => {
-    setInput(e.target.value);
-  };
-  
-  const handleSender = (e:any) => {
-    setSender(e.target.value);
-  };
-  
-  const handleSubmit = (e:any) => {
-    e.preventDefault();
-    socket.emit('chat message', { message: input, sender: phoneNumber,id:id });
-    setInput('');
-  };
-  
- 
-  const presentToast = (position: 'top' | 'middle' | 'bottom') => {
-    present({
-      message: 'Hello World!',
-      duration: 1500,
-      position: position
-    });
-  };
-
-  useEffect(() => {
-
-    // const checkCameraPermission = async () => {
-    //   const { Camera } = Plugins;
-    //   const permission = await Camera.checkPermissions();
-    //   setCameraPermission(permission.camera === 'granted');
-    // };
-    
-    // const checkContactsPermission = async () => {
-    //   const { Contacts } = Plugins;
-    //   const permission = await Contacts.getPermissions();
-    //   setContactsPermission(permission.contacts === 'granted');
-    // };
-  
-    // checkCameraPermission();
-    // checkContactsPermission();
-    retrieveListOfContacts();
-  }, []);
-  
-
- 
-
-  return (
-    <Row className='app'>
-      {phoneNumber}
-     { contacts.length>0 && JSON.stringify(contacts)}
-    <div style={{height:"100vh"}}>
-    <div style={{position: "fixed",width:"100%",
-    bottom: "16px"}}>
-    {messages.map((msg:any, i:number) => (
-      <div key={i} className={`chat-bubble-block row  m-0 px-3 ${msg.id === id ?'justify-content-end':"justify-content-start"}`}>
-      <div className='chat-bubble col-6'>
-      <p className='m-0 p-2 text-white' key={i}>{msg.id === id ?"you": "stranger"}: {msg.message}</p>
-      </div>
-      </div>  
-      ))} 
-   
-      <Row className='mx-0'>
-      <Col>
-      <IonInput className='form-control  w-100' type="text" value={input} onIonChange={handleInput} placeholder="Enter your message" ></IonInput></Col>
-      <IonButton  className="w-auto h-auto" size="default" onClick={(e)=>{handleSubmit(e)}}>Send</IonButton>
-      </Row>
-      </div>
-      </div>
-     
-      </Row>
-      );
+  const generateItems = () => {
+    const newItems = []
+    for (let i = 0; i < 50; i++) {
+      newItems.push(`Item ${1 + items.length + i}`)
     }
-    
-    export default UsersList;
+    setItems([...items, ...newItems])
+  }
+  const handleRefresh = (event: CustomEvent<RefresherEventDetail>) => {
+    setTimeout(() => {
+      // Any calls to load data go here
+      generateItems()
+      event.detail.complete()
+    }, 2000)
+  }
+  useEffect(() => {
+    generateItems()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  return (
+    <>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Moments</IonTitle>
+          {/* <IonProgressBar type="determinate"></IonProgressBar> */}
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent>
+        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
+        <IonList lines="full" contextMenu='ss'>
+          {items.map((item, index) => (
+            <IonItem key={index} button onClick={()=>{alert(index+1)}}>
+              <IonAvatar slot='start'>
+                <img
+                  src={'https://picsum.photos/80/80?random=' + index}
+                  alt="avatar"
+                />
+              </IonAvatar>
+              <IonLabel>
+          <h3>Sandeep kolii</h3>
+          <p>hello world buddy...!!!!</p>
+        </IonLabel>
+
+              <IonBadge color="success" slot="end">
+                80
+              </IonBadge>
+            </IonItem>
+          ))}
+        </IonList>
+        <IonInfiniteScroll
+          onIonInfinite={(ev:any) => {
+            generateItems()
+            setTimeout(() => ev.target.complete(), 500)
+          }}
+        >
+          <IonInfiniteScrollContent></IonInfiniteScrollContent>
+        </IonInfiniteScroll>
+      </IonContent>
+    </>
+  )
+}
+
+export default UsersList
