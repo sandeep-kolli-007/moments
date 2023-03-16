@@ -1,15 +1,7 @@
-import {  Route } from 'react-router-dom';
+import {  Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
-  IonButton,
-  IonContent,
-  IonIcon,
-  IonLabel,
-  IonPage,
   IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
   setupIonicReact
 } from '@ionic/react';
 import React from 'react';
@@ -36,6 +28,9 @@ import './theme/variables.css';
 import UsersList from './components/usersList/UsersList';
 import PhoneAuth from './components/phone/PhoneAuth';
 import Counter from './components/Counter';
+import { IonReactRouter } from '@ionic/react-router';
+import IndividualChat from './components/individualChat/individualChat';
+import Tabs from './components/tabs/tabs';
 
 setupIonicReact();
 
@@ -43,6 +38,7 @@ const App: React.FC = () =>
   {
   return (
     <PhoneAuth />
+
   );
   }
  

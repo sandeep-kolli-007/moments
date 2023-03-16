@@ -1,28 +1,6 @@
-import {
-  IonApp,
-  IonAvatar,
-  IonBadge,
-  IonButton,
-  IonContent,
-  IonHeader,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonProgressBar,
-  IonRefresher,
-  IonRefresherContent,
-  IonText,
-  IonTitle,
-  IonToolbar,
-  RefresherEventDetail,
-  useIonToast,
-} from '@ionic/react'
+import {  IonPage,RefresherEventDetail} from '@ionic/react'
 import { io } from 'socket.io-client'
 import { Plugins } from '@capacitor/core'
-
 import React from 'react'
 import { useEffect, useState } from 'react'
 import CustomList from '../shared/customList'
@@ -50,10 +28,10 @@ function UsersList({ phoneNumber }: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
-    <>
+    <IonPage>
       <Header title={"moments"}/>
       <CustomList  data={items} />
-    </>
+    </IonPage>
   )
 }
 

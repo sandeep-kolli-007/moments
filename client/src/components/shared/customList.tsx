@@ -1,4 +1,4 @@
-import { IonAvatar, IonBadge, IonContent, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonList, IonRefresher, IonRefresherContent, IonTitle, IonToolbar, RefresherEventDetail } from '@ionic/react'
+import { IonAvatar, IonBadge, IonContent, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonItem, IonLabel, IonList, IonPage, IonRefresher, IonRefresherContent, IonTitle, IonToolbar, RefresherEventDetail } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
 import { useParams,useHistory} from 'react-router-dom';
 
@@ -13,17 +13,14 @@ function CustomList(props:any) {
       }
   return (
     <>
-  
-
     <IonContent>
       <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
         <IonRefresherContent></IonRefresherContent>
       </IonRefresher>
       <IonList lines="full"  >
         {props.data && props.data.map((item:any, index:number) => (
-          <IonItem key={index} button onClick={()=>{props.isContacts?
-                history.push(`/individual/${item.phoneNumber[0]}`):alert("test")
-          }}>
+          <IonItem key={index} button  href={item?.phoneNumber ? `/individual/${item?.phoneNumber[0]}/${item.name}`:''}  
+         >
             <IonAvatar slot='start'>
               <img
                 src={'https://picsum.photos/80/80?random=' + index}
