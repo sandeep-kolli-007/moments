@@ -106,26 +106,30 @@ function IndividualChat({ phoneNumber }: any) {
   //   fetchContacts();
   // }, []);
 
-  useEffect(() => {
-    socket.on('chat message', (msg: any) => {
-      setMessages([...messages, msg])
-    })
-  }, [messages])
+ 
 
   useEffect(() => {
     socket.on('connect', () => {
       console.log(socket.id) // x8WIv7-mJelg7on_ALbx
       setId(socket.id)
     })
+    socket.on('chat message', (msg: any) => {
+      setMessages((prev:any)=>[...prev, msg])
+    })
   }, [])
+  
+  useEffect(()=>{
+   const ele:any= document.getElementById("chat-scrollable")
+    ele.scrollTo(0, ele.scrollHeight);
+  },[messages])
 
   const handleInput = (e: any) => {
     setInput(e.target.value)
   }
 
-  const handleSender = (e: any) => {
-    setSender(e.target.value)
-  }
+  // const handleSender = (e: any) => {
+  //   setSender(e.target.value)
+  // }
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
@@ -138,22 +142,22 @@ function IndividualChat({ phoneNumber }: any) {
         sentAt:serverTimestamp()
       }
     )
-    setMessages([...messages,{
-      message:input,
-      recipient:number,
-      sender:phoneNumber,
-      sentAt:serverTimestamp()
-    }])
+    // setMessages([...messages,{
+    //   message:input,
+    //   recipient:number,
+    //   sender:phoneNumber,
+    //   sentAt:serverTimestamp()
+    // }])
     setInput('')
   }
 
-  const presentToast = (position: 'top' | 'middle' | 'bottom') => {
-    present({
-      message: 'Hello World!',
-      duration: 1500,
-      position: position,
-    })
-  }
+  // const presentToast = (position: 'top' | 'middle' | 'bottom') => {
+  //   present({
+  //     message: 'Hello World!',
+  //     duration: 1500,
+  //     position: position,
+  //   })
+  // }
 
   useEffect(()=>{
     db.collection('messages')
@@ -193,7 +197,7 @@ function IndividualChat({ phoneNumber }: any) {
    <IonGrid>
      <IonRow className="app ">
        {/* { contacts.length>0 && JSON.stringify(contacts)} */}
-       <IonCol
+       <IonCol id="chat-scrollable"
          size="12"
          style={{"maxHeight": "calc(100vh - 165px)","overflowY":"auto"}}
        >
