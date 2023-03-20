@@ -114,7 +114,9 @@ function IndividualChat({ phoneNumber }: any) {
       setId(socket.id)
     })
     socket.on('chat message', (msg: any) => {
-      setMessages((prev:any)=>[...prev, msg])
+      if((msg.recipient === phoneNumber) ||( msg.recipient === number)){
+        setMessages((prev:any)=>[...prev, msg])
+      }
     })
   }, [])
   
